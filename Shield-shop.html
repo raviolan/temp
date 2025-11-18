@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valkrath's Shield Commission</title>
+    <style>
+        :root {
+            --bg: #050814;
+            --bg-card: #12182b;
+            --accent: #ffb347;
+            --accent-soft: rgba(255, 179, 71, 0.15);
+            --text: #f5f5f7;
+            --muted: #a0a4b8;
+            --border: #252b42;
+            --danger: #ff5c5c;
+            --radius: 18px;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                sans-serif;
+            background: radial-gradient(circle at top, #182042 0, #050814 55%);
+            color: var(--text);
+        }
+
+        .page {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 1.25rem 1rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            margin: 0 0 0.35rem;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .note {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.4rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.1rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            background: rgba(0, 0, 0, 0.45);
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .pill span {
+            width: 0.45rem;
+            height: 0.45rem;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-soft);
+        }
+
+        .card {
+            background: linear-gradient(145deg, #141a31 0%, #090c18 70%);
+            border-radius: var(--radius);
+            padding: 1rem 0.85rem;
+            margin-bottom: 0.9rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.7rem;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.95rem;
+        }
+
+        .step-badge {
+            width: 1.35rem;
+            height: 1.35rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent-soft);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .card-header small {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.4rem;
+        }
+
+        @media (min-width: 420px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option {
+            position: relative;
+        }
+
+        .option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .option-label {
+            display: block;
+            width: 100%;
+            padding: 0.55rem 0.6rem;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(7, 10, 24, 0.95);
+            font-size: 0.8rem;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            transition: border 0.15s ease, background 0.15s ease, transform 0.08s ease;
+        }
+
+        .option-label:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .option input:checked+.option-label {
+            border-color: var(--accent);
+            background: radial-gradient(circle at top left, var(--accent-soft), #050814);
+        }
+
+        .option-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.3rem;
+        }
+
+        .option-name {
+            font-weight: 500;
+        }
+
+        .option-price {
+            font-size: 0.78rem;
+            color: var(--accent);
+        }
+
+        .option-desc {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        .subtext {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.35rem;
+        }
+
+        .extras {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .extra-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+            font-size: 0.78rem;
+        }
+
+        .extra-row input[type="checkbox"] {
+            margin-top: 0.12rem;
+            accent-color: var(--accent);
+        }
+
+        .extra-main {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.35rem;
+            width: 100%;
+        }
+
+        .extra-label {
+            font-weight: 500;
+        }
+
+        .extra-price {
+            font-size: 0.78rem;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.5rem 0.6rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(7, 10, 24, 0.95);
+            color: var(--text);
+            font-size: 0.8rem;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: var(--accent);
+        }
+
+        .summary {
+            border: 1px solid var(--accent-soft);
+            background: radial-gradient(circle at top, #1b233f 0, #090c18 55%);
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-header h2 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .summary-tagline {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        .total {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .total span {
+            font-size: 1.1rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.45rem;
+            font-size: 0.78rem;
+        }
+
+        .summary-row {
+            padding: 0.4rem 0.45rem;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-bottom: 0.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .summary-value {
+            font-size: 0.82rem;
+        }
+
+        .summary-list {
+            padding-left: 1.1rem;
+            margin: 0.1rem 0 0;
+        }
+
+        .summary-list li {
+            margin: 0.05rem 0;
+        }
+
+        .summary-warning {
+            font-size: 0.68rem;
+            color: var(--muted);
+            margin-top: 0.45rem;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-top: 0.4rem;
+        }
+
+        .scroll-btn {
+            margin-top: 0.3rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .scroll-btn button {
+            border-radius: 999px;
+            border: 1px solid var(--accent-soft);
+            background: rgba(5, 8, 20, 0.9);
+            color: var(--accent);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+        }
+
+        .scroll-btn button:hover {
+            background: rgba(10, 14, 32, 1);
+            border-color: var(--accent);
+        }
+
+        .scroll-btn button span {
+            font-size: 0.9em;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.08rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba(255, 179, 71, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(255, 179, 71, 0.25);
+            margin-left: 0.4rem;
+        }
+
+        .drawer {
+            margin-top: 0.6rem;
+            padding: 0.7rem 0.8rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .drawer-toggle {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.3rem;
+            border-radius: 6px;
+            margin-left: auto;
+            transition: all 0.15s ease;
+        }
+
+        .drawer-toggle:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .drawer-toggle.expanded {
+            transform: rotate(90deg);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .magic-effect {
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            background: rgba(255, 179, 71, 0.08);
+            border: 1px solid rgba(255, 179, 71, 0.2);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .ac-bonus-row {
+            background: rgba(0, 0, 0, 0.35);
+            border: 2px solid var(--accent-soft);
+            margin: 0.6rem 0;
+            padding: 0.4rem 0.45rem;
+            border-radius: 10px;
+        }
+
+        .ac-bonus-row .summary-label {
+            font-size: 0.7rem;
+            color: var(--accent);
+            margin-bottom: 0.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            font-weight: 500;
+        }
+
+        .ac-bonus-row .summary-value {
+            font-size: 0.82rem;
+            color: var(--text);
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <header>
+            <div class="pill">
+                <span></span>
+                <div>Valkrath's Shield Commission</div>
+            </div>
+            <h1>The Dwarven Anvil Custom Order Form</h1>
+        </header>
+
+        <div class="scroll-btn">
+            <button type="button" id="scrollSummaryBtn">
+                Scroll to Summary <span>↓</span>
+            </button>
+        </div>
+
+        <!-- STEP 1: Base shield -->
+        <section class="card">
+            <div class="card-header">
+                <div class="step-title">
+                    <div class="step-badge">1</div>
+                    Base Shield <span class="tag">Cosmetic</span>
+                </div>
+                <small>All are standard PHB shields (+2 AC)</small>
+            </div>
+            <div class="options-grid">
+                <div class="option">
+                    <input type="radio" name="base" id="base-round" value="Saltmarsh Round" data-price="10" checked />
+                    <label class="option-label" for="base-round">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Saltmarsh Round</div>
+                                <div class="option-price">10 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-base-round">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Broad round shield with iron boss, common on the docks.
+                        </div>
+                        <div class="drawer" id="drawer-base-round" style="display: none;">
+                            <!-- Base Shield Drawer: Saltmarsh Round -->
+                            <strong>Pros:</strong> Classic design, balanced coverage, familiar to most fighters. Good all-around protection with the central boss deflecting direct hits.<br><br>
+                            <strong>Cons:</strong> Less coverage than larger shields, boss can catch on terrain in tight spaces.<br><br>
+                            <strong>Real-world:</strong> The iron boss reinforces the center and can be used offensively in close combat. Popular among sailors and dock guards.<br><br>
+                            <strong>Mechanics:</strong> Standard shield (+2 AC), no special rules.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="base" id="base-kite" value="Dragon-Kite" data-price="10" />
+                    <label class="option-label" for="base-kite">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Dragon-Kite</div>
+                                <div class="option-price">10 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-base-kite">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Tapered kite shape, made for hard charges and shield walls.
+                        </div>
+                        <div class="drawer" id="drawer-base-kite" style="display: none;">
+                            <!-- Base Shield Drawer: Dragon-Kite -->
+                            <strong>Pros:</strong> Excellent for mounted combat and charges, tapered shape deflects attacks downward, intimidating draconic aesthetic.<br><br>
+                            <strong>Cons:</strong> Less effective against attacks from below, can be unwieldy in cramped spaces.<br><br>
+                            <strong>Real-world:</strong> The elongated design provides good protection while charging and looks impressive in formation. Often used by cavalry and elite guards.<br><br>
+                            <strong>Mechanics:</strong> Standard shield (+2 AC), no special rules.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="base" id="base-heater" value="Stonewall Heater" data-price="10" />
+                    <label class="option-label" for="base-heater">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Stonewall Heater</div>
+                                <div class="option-price">10 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-base-heater">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Classic dwarven heater shield, broad at the top, tapered base.
+                        </div>
+                        <div class="drawer" id="drawer-base-heater" style="display: none;">
+                            <!-- Base Shield Drawer: Stonewall Heater -->
+                            <strong>Pros:</strong> Excellent upper body protection, traditional dwarven craftsmanship, good balance of coverage and mobility.<br><br>
+                            <strong>Cons:</strong> Reduced lower leg protection due to taper, may feel unfamiliar to non-dwarves.<br><br>
+                            <strong>Real-world:</strong> The broad top protects vital organs while the tapered bottom allows for better leg movement. Favored by dwarven warriors for centuries.<br><br>
+                            <strong>Mechanics:</strong> Standard shield (+2 AC), no special rules.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="base" id="base-door" value="Bulwark Door" data-price="10" />
+                    <label class="option-label" for="base-door">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Bulwark Door</div>
+                                <div class="option-price">10 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-base-door">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Heavy, rectangular shield that looks like a vault door.
+                        </div>
+                        <div class="drawer" id="drawer-base-door" style="display: none;">
+                            <!-- Base Shield Drawer: Bulwark Door -->
+                            <strong>Pros:</strong> Maximum coverage, intimidating appearance, excellent for defensive formations and chokepoints.<br><br>
+                            <strong>Cons:</strong> Heavy and cumbersome, reduced mobility, can obstruct vision, tiring to use for extended periods.<br><br>
+                            <strong>Real-world:</strong> Designed for pure defense, often used by guards protecting important locations. The rectangular shape provides full body coverage when crouched.<br><br>
+                            <strong>Mechanics:</strong> Standard shield (+2 AC), no special rules.
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="subtext">
+                Rules: Treated as a standard shield from the Player's Handbook.
+            </div>
+        </section>
+
+        <!-- STEP 2: Material & finish -->
+        <section class="card">
+            <div class="card-header">
+                <div class="step-title">
+                    <div class="step-badge">2</div>
+                    Material &amp; Finish <span class="tag">Cosmetic</span>
+                </div>
+                <small>Appearance only, no rule changes</small>
+            </div>
+            <div class="options-grid">
+                <div class="option">
+                    <input type="radio" name="material" id="mat-plain" value="Plain Iron" data-price="0" checked />
+                    <label class="option-label" for="mat-plain">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Plain Iron</div>
+                                <div class="option-price">+0 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-mat-plain">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Guard-issue polish with the smith's mark only.
+                        </div>
+                        <div class="drawer" id="drawer-mat-plain" style="display: none;">
+                            <!-- Material Drawer: Plain Iron -->
+                            <strong>Pros:</strong> Affordable, practical, easy to maintain and repair. Won't draw unwanted attention or mark you as wealthy.<br><br>
+                            <strong>Cons:</strong> Basic appearance, no distinctive features, may rust if not properly maintained.<br><br>
+                            <strong>Real-world:</strong> Standard military issue. Functional and reliable but purely utilitarian in appearance.<br><br>
+                            <strong>Mechanics:</strong> No game effects, purely cosmetic choice.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="material" id="mat-etched" value="Etched Steel" data-price="5" />
+                    <label class="option-label" for="mat-etched">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Etched Steel</div>
+                                <div class="option-price">+5 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-mat-etched">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Simple waves, mountains, or runes etched into the face.
+                        </div>
+                        <div class="drawer" id="drawer-mat-etched" style="display: none;">
+                            <!-- Material Drawer: Etched Steel -->
+                            <strong>Pros:</strong> Personal touch without excessive cost, subtle decoration that shows craftsmanship, resistant to rust.<br><br>
+                            <strong>Cons:</strong> Etching can collect dirt and require extra cleaning, may be damaged if not properly maintained.<br><br>
+                            <strong>Real-world:</strong> Simple patterns add character while remaining practical. Common among professional soldiers who want some personalization.<br><br>
+                            <strong>Mechanics:</strong> No game effects, purely cosmetic choice.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="material" id="mat-inlaid" value="Inlaid Steel" data-price="20" />
+                    <label class="option-label" for="mat-inlaid">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Inlaid Steel</div>
+                                <div class="option-price">+20 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-mat-inlaid">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Brass or copper inlay, clan sigil, or personal emblem.
+                        </div>
+                        <div class="drawer" id="drawer-mat-inlaid" style="display: none;">
+                            <!-- Material Drawer: Inlaid Steel -->
+                            <strong>Pros:</strong> Beautiful and distinctive, shows wealth and status, metal inlays are durable and won't fade.<br><br>
+                            <strong>Cons:</strong> Expensive, marks you as wealthy (potential target), inlays may need occasional polishing.<br><br>
+                            <strong>Real-world:</strong> High-quality craftsmanship that displays personal or family heraldry. Often commissioned by nobles or successful adventurers.<br><br>
+                            <strong>Mechanics:</strong> No game effects, purely cosmetic choice.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="material" id="mat-blackened" value="Blackened Steel" data-price="10" />
+                    <label class="option-label" for="mat-blackened">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Blackened Steel</div>
+                                <div class="option-price">+10 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-mat-blackened">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Dark finish with minimal shine, favoured by night patrols.
+                        </div>
+                        <div class="drawer" id="drawer-mat-blackened" style="display: none;">
+                            <!-- Material Drawer: Blackened Steel -->
+                            <strong>Pros:</strong> Reduced glare and visibility, intimidating appearance, resistant to showing wear and scratches.<br><br>
+                            <strong>Cons:</strong> Can absorb more heat in sunlight, harder to inspect for damage, may appear ominous to some.<br><br>
+                            <strong>Real-world:</strong> Specialized finish often used by scouts, assassins, or guards who need to remain inconspicuous in low light.<br><br>
+                            <strong>Mechanics:</strong> No game effects, purely cosmetic choice.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="material" id="mat-silvered" value="Silvered Trim" data-price="25" />
+                    <label class="option-label" for="mat-silvered">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Silvered Trim</div>
+                                <div class="option-price">+25 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-mat-silvered">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Decorative silver edging along the rim and boss.
+                        </div>
+                        <div class="drawer" id="drawer-mat-silvered" style="display: none;">
+                            <!-- Material Drawer: Silvered Trim -->
+                            <strong>Pros:</strong> Elegant and prestigious, silver naturally resists tarnish, catches light beautifully for intimidation.<br><br>
+                            <strong>Cons:</strong> Very expensive, highly visible (no stealth), requires regular polishing, marks you as extremely wealthy.<br><br>
+                            <strong>Real-world:</strong> Reserved for ceremonial occasions or wealthy nobles. The silver trim shows exceptional craftsmanship and status.<br><br>
+                            <strong>Mechanics:</strong> No game effects, purely cosmetic choice.
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="subtext">
+                Decorative choices only. Any special interactions with creatures are at
+                your DM's discretion.
+            </div>
+        </section>
+
+        <!-- STEP 3: Emblems & holy symbols -->
+        <section class="card">
+            <div class="card-header">
+                <div class="step-title">
+                    <div class="step-badge">3</div>
+                    Emblems &amp; Holy Symbols <span class="tag">Functional</span>
+                </div>
+                <small>Can count as a holy symbol (PHB)</small>
+            </div>
+            <div class="options-grid">
+                <div class="option">
+                    <input type="radio" name="emblem" id="emblem-none" value="None" data-price="0" checked />
+                    <label class="option-label" for="emblem-none">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">No Emblem</div>
+                                <div class="option-price">+0 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-emblem-none">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            No extra markings beyond the basic finish.
+                        </div>
+                        <div class="drawer" id="drawer-emblem-none" style="display: none;">
+                            <!-- Emblem Drawer: No Emblem -->
+                            <strong>Pros:</strong> No cost, versatile for any character, won't identify your allegiances, clean aesthetic.<br><br>
+                            <strong>Cons:</strong> No personal meaning, can't serve as holy symbol, may appear plain or unfinished.<br><br>
+                            <strong>Real-world:</strong> Sometimes the most practical choice when you don't want to advertise your beliefs or affiliations.<br><br>
+                            <strong>Mechanics:</strong> No special properties, cannot be used as a spellcasting focus.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="emblem" id="emblem-simple" value="Simple Symbol" data-price="5" />
+                    <label class="option-label" for="emblem-simple">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Simple Symbol</div>
+                                <div class="option-price">+5 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-emblem-simple">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            A single emblem, rune, or small crest engraved on the front.
+                        </div>
+                        <div class="drawer" id="drawer-emblem-simple" style="display: none;">
+                            <!-- Emblem Drawer: Simple Symbol -->
+                            <strong>Pros:</strong> Affordable personalization, can represent family/organization, subtle but meaningful decoration.<br><br>
+                            <strong>Cons:</strong> Not elaborate enough to serve as holy symbol, limited space for detail, may wear over time.<br><br>
+                            <strong>Real-world:</strong> Perfect for personal touches like clan marks, guild symbols, or memorial emblems without religious significance.<br><br>
+                            <strong>Mechanics:</strong> Decorative only, cannot be used as a spellcasting focus.
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option">
+                    <input type="radio" name="emblem" id="emblem-holy" value="Emblazoned Holy Symbol" data-price="15" />
+                    <label class="option-label" for="emblem-holy">
+                        <div class="option-header">
+                            <div class="option-main">
+                                <div class="option-name">Emblazoned Holy Symbol</div>
+                                <div class="option-price">+15 gp</div>
+                            </div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-emblem-holy">▶</button>
+                        </div>
+                        <div class="option-desc">
+                            Your deity or order's symbol in full metal and enamel, suitable as
+                            a holy symbol.
+                        </div>
+                        <div class="drawer" id="drawer-emblem-holy" style="display: none;">
+                            <!-- Emblem Drawer: Emblazoned Holy Symbol -->
+                            <strong>Pros:</strong> Functions as holy symbol for spellcasting, displays faith prominently, beautiful and meaningful decoration, saves equipment slot.<br><br>
+                            <strong>Cons:</strong> More expensive, publicly identifies your religious beliefs, may attract unwanted attention from enemies of your faith.<br><br>
+                            <strong>Real-world:</strong> Sacred symbols crafted with religious significance, often blessed by clergy and treated as religious artifacts.<br><br>
+                            <strong>Mechanics:</strong> Can be used as spellcasting focus for clerics and paladins (replaces separate holy symbol).
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="subtext">
+                Rules: A holy symbol can be emblazoned on a shield and functions as a
+                focus for cleric or paladin spells (PHB).
+            </div>
+        </section>
+
+        <!-- STEP 4: Extra details -->
+        <section class="card">
+            <div class="card-header">
+                <div class="step-title">
+                    <div class="step-badge">4</div>
+                    Extra Details <span class="tag">Cosmetic</span>
+                </div>
+                <small>All flavour, no rule changes</small>
+            </div>
+            <div class="extras">
+                <label class="extra-row">
+                    <input type="checkbox" name="extra" value="Heraldry & Unit Marks" data-price="5" />
+                    <div class="extra-main">
+                        <div>
+                            <div class="extra-label">Heraldry &amp; Unit Marks</div>
+                            <div class="option-desc">
+                                Saltmarsh insignia, company sigils, or campaign badges along the
+                                rim.
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.3rem;">
+                            <div class="extra-price">+5 gp</div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-extra-heraldry">▶</button>
+                        </div>
+                    </div>
+                    <div class="drawer" id="drawer-extra-heraldry" style="display: none;">
+                        <!-- Extra Detail Drawer: Heraldry & Unit Marks -->
+                        <strong>Pros:</strong> Shows military service and allegiances, provides instant recognition among allies, demonstrates honor and achievements.<br><br>
+                        <strong>Cons:</strong> May make you a target for enemies of your unit, limits anonymity, could be seen as boastful.<br><br>
+                        <strong>Real-world:</strong> Military traditions and unit pride displayed through official insignia, battle honors, and service medals.<br><br>
+                        <strong>Mechanics:</strong> No game effects, purely cosmetic and roleplaying flavor.
+                    </div>
+                </label>
+
+                <label class="extra-row">
+                    <input type="checkbox" name="extra" value="Tool-Fit Grip & Straps" data-price="2" />
+                    <div class="extra-main">
+                        <div>
+                            <div class="extra-label">Tool-Fit Grip &amp; Straps</div>
+                            <div class="option-desc">
+                                Custom-fitted grip and straps sized to Valkrath's gauntlet.
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.3rem;">
+                            <div class="extra-price">+2 gp</div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-extra-grip">▶</button>
+                        </div>
+                    </div>
+                    <div class="drawer" id="drawer-extra-grip" style="display: none;">
+                        <!-- Extra Detail Drawer: Tool-Fit Grip & Straps -->
+                        <strong>Pros:</strong> Perfect ergonomic fit, improved comfort during extended use, reduces hand fatigue, harder for enemies to disarm.<br><br>
+                        <strong>Cons:</strong> Only fits the specific person it's made for, slight additional cost, may need adjustment if hands change size.<br><br>
+                        <strong>Real-world:</strong> Professional-grade customization that treats the shield as precision equipment rather than mass-produced gear.<br><br>
+                        <strong>Mechanics:</strong> No game effects, but provides narrative justification for comfort and familiarity with the shield.
+                    </div>
+                </label>
+
+                <label class="extra-row">
+                    <input type="checkbox" name="extra" value="Spell-Friendly Design" data-price="5" />
+                    <div class="extra-main">
+                        <div>
+                            <div class="extra-label">Spell-Friendly Design</div>
+                            <div class="option-desc">
+                                Channels and recesses ready for future runes or gems.
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.3rem;">
+                            <div class="extra-price">+5 gp</div>
+                            <button type="button" class="drawer-toggle" data-target="drawer-extra-spell">▶</button>
+                        </div>
+                    </div>
+                    <div class="drawer" id="drawer-extra-spell" style="display: none;">
+                        <!-- Extra Detail Drawer: Spell-Friendly Design -->
+                        <strong>Pros:</strong> Prepared for future magical enhancement, shows forward thinking, built-in channels for magical energy flow.<br><br>
+                        <strong>Cons:</strong> More expensive upfront, channels may collect dirt, unused features if never enchanted.<br><br>
+                        <strong>Real-world:</strong> Specialized craftsmanship that anticipates magical modification, like pre-wiring a house for future technology.<br><br>
+                        <strong>Mechanics:</strong> Makes future magical enhancements easier (DM discretion), provides foundation for magical item creation.
+                    </div>
+                </label>
+            </div>
+            <div class="subtext">
+                These details help describe how the shield looks and how Valkrath uses
+                it at the table.
+            </div>
+        </section>
+
+        <!-- STEP 5: Magic item choice (official, price TBD) -->
+        <section class="card">
+            <div class="card-header">
+                <div class="step-title">
+                    <div class="step-badge">5</div>
+                    Magic Item (Optional) <span class="tag">Functional</span>
+                </div>
+                <small>Official 5e items, price by DM</small>
+            </div>
+            <div>
+                <label for="magicChoice" class="subtext" style="margin-bottom: 0.35rem;">
+                    Choose which official magic shield this should count as, if any.
+                </label>
+                <select id="magicChoice">
+                    <option value="" data-price="0">None (nonmagical shield)</option>
+                    <option value="Shield, +1" data-price="500">Shield, +1 (Uncommon) — 500 gp</option>
+                    <option value="Shield, +2" data-price="5000">Shield, +2 (Rare) — 5000 gp</option>
+                    <option value="Shield, +3" data-price="20000">Shield, +3 (Very Rare) — 20000 gp</option>
+                </select>
+                <div class="magic-effect" id="magicEffect" style="display: none;"></div>
+                <div class="subtext">
+                    Rules text and rarity are as printed in the official 5e books. Gold
+                    cost for magic items is intentionally not included in the total and is
+                    up to your DM.
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <section class="card summary" id="summaryCard">
+            <div class="summary-header">
+                <div>
+                    <h2>Order Summary</h2>
+                    <div class="summary-tagline">
+                        Screenshot this and send to your DM for approval.
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-row">
+                    <div class="summary-label">Base Shield</div>
+                    <div class="summary-value" id="summaryBase">Saltmarsh Round</div>
+                </div>
+
+                <div class="summary-row">
+                    <div class="summary-label">Material &amp; Finish</div>
+                    <div class="summary-value" id="summaryMaterial">Plain Iron</div>
+                </div>
+
+                <div class="summary-row">
+                    <div class="summary-label">Emblem / Holy Symbol</div>
+                    <div class="summary-value" id="summaryEmblem">None</div>
+                </div>
+
+                <div class="summary-row">
+                    <div class="summary-label">Extra Details</div>
+                    <div class="summary-value" id="summaryExtras">
+                        None selected
+                    </div>
+                </div>
+
+                <div class="summary-row">
+                    <div class="summary-label">Magic Item Choice (Official 5e)</div>
+                    <div class="summary-value" id="summaryMagic">
+                        None (nonmagical shield)
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-row ac-bonus-row">
+                <div class="summary-label">⚔️ Equipped AC Bonus</div>
+                <div class="summary-value" id="summaryACBonus">
+                    +2 AC (Standard Shield)
+                </div>
+            </div>
+
+            <div class="total">
+                Total Mundane Cost:
+                <span id="totalGp">10</span> gp
+            </div>
+            <div class="total" id="magicCostRow" style="display: none;">
+                Magic Item Cost:
+                <span id="magicGp">0</span> gp
+            </div>
+            <div class="total" id="grandTotalRow" style="display: none;">
+                <strong>Grand Total:
+                <span id="grandTotalGp">10</span> gp</strong>
+            </div>
+
+            <div class="summary-warning">
+                Gold total includes only the mundane crafting and decoration listed
+                above. Any magic shield choice uses the official 5e item of that name;
+                availability and additional cost are entirely up to the DM.
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            "use strict";
+
+            // Magic item effect descriptions
+            const magicEffects = {
+                "Shield, +1": "Provides +1 bonus to AC (total +3 AC while equipped).",
+                "Shield, +2": "Provides +2 bonus to AC (total +4 AC while equipped).",
+                "Shield, +3": "Provides +3 bonus to AC (total +5 AC while equipped)."
+            };
+
+            function getCheckedValue(name) {
+                const el = document.querySelector('input[name="' + name + '"]:checked');
+                if (!el) return { value: "—", price: 0 };
+                const price = Number(el.dataset.price || 0);
+                return { value: el.value, price: price };
+            }
+
+            function getExtras() {
+                const extras = Array.from(
+                    document.querySelectorAll('input[name="extra"]:checked')
+                );
+                const names = extras.map(function (el) {
+                    return el.value;
+                });
+                const total = extras.reduce(function (sum, el) {
+                    return sum + Number(el.dataset.price || 0);
+                }, 0);
+                return { names: names, price: total };
+            }
+
+            function getMagicItem() {
+                const magicSelect = document.getElementById("magicChoice");
+                if (!magicSelect) return { value: "", text: "None (nonmagical shield)", price: 0 };
+                
+                const selectedOption = magicSelect.options[magicSelect.selectedIndex];
+                const value = selectedOption.value;
+                const price = Number(selectedOption.dataset.price || 0);
+                const text = value || "None (nonmagical shield)";
+                
+                return { value: value, text: text, price: price };
+            }
+
+            function updateMagicEffect(magicValue) {
+                const effectEl = document.getElementById("magicEffect");
+                if (!effectEl) return;
+                
+                if (magicValue && magicEffects[magicValue]) {
+                    effectEl.textContent = magicEffects[magicValue];
+                    effectEl.style.display = "block";
+                } else {
+                    effectEl.style.display = "none";
+                }
+            }
+
+            function calculateACBonus(magic, emblem) {
+                // Base shield AC bonus
+                let acBonus = 2;
+                let description = "+2 AC (Standard Shield)";
+                let features = [];
+                
+                // Add magic shield bonus
+                if (magic.value === "Shield, +1") {
+                    acBonus = 3;
+                    description = "+3 AC (Magic +1 Shield)";
+                } else if (magic.value === "Shield, +2") {
+                    acBonus = 4;
+                    description = "+4 AC (Magic +2 Shield)";
+                } else if (magic.value === "Shield, +3") {
+                    acBonus = 5;
+                    description = "+5 AC (Magic +3 Shield)";
+                }
+                
+                // Add functional features
+                if (emblem.value === "Emblazoned Holy Symbol") {
+                    features.push("Holy Symbol Focus");
+                }
+                
+                // Create full description
+                if (features.length > 0) {
+                    description += " + " + features.join(", ");
+                }
+                
+                return description;
+            }
+
+            function updateSummary() {
+                const base = getCheckedValue("base");
+                const mat = getCheckedValue("material");
+                const emblem = getCheckedValue("emblem");
+                const extras = getExtras();
+                const magic = getMagicItem();
+
+                const mundaneTotal = base.price + mat.price + emblem.price + (extras.price || 0);
+                const grandTotal = mundaneTotal + magic.price;
+
+                // Update basic summary
+                document.getElementById("summaryBase").textContent = base.value;
+                document.getElementById("summaryMaterial").textContent = mat.value;
+                document.getElementById("summaryEmblem").textContent = emblem.value;
+
+                const extrasEl = document.getElementById("summaryExtras");
+                if (!extras.names.length) {
+                    extrasEl.textContent = "None selected";
+                } else {
+                    extrasEl.textContent = extras.names.join(", ");
+                }
+
+                document.getElementById("summaryMagic").textContent = magic.text;
+                document.getElementById("totalGp").textContent = mundaneTotal;
+
+                // Update AC bonus display
+                const acBonusDescription = calculateACBonus(magic, emblem);
+                document.getElementById("summaryACBonus").textContent = acBonusDescription;
+
+                // Update magic cost display
+                const magicCostRow = document.getElementById("magicCostRow");
+                const grandTotalRow = document.getElementById("grandTotalRow");
+                const magicGpEl = document.getElementById("magicGp");
+                const grandTotalGpEl = document.getElementById("grandTotalGp");
+                
+                if (magic.price > 0) {
+                    magicGpEl.textContent = magic.price;
+                    grandTotalGpEl.textContent = grandTotal;
+                    magicCostRow.style.display = "block";
+                    grandTotalRow.style.display = "block";
+                } else {
+                    magicCostRow.style.display = "none";
+                    grandTotalRow.style.display = "none";
+                }
+
+                // Update magic effect
+                updateMagicEffect(magic.value);
+            }
+
+            function toggleDrawer(targetId) {
+                const drawer = document.getElementById(targetId);
+                const toggle = document.querySelector('[data-target="' + targetId + '"]');
+                
+                if (!drawer || !toggle) return;
+                
+                const isVisible = drawer.style.display !== "none";
+                
+                drawer.style.display = isVisible ? "none" : "block";
+                toggle.classList.toggle("expanded", !isVisible);
+                toggle.textContent = isVisible ? "▶" : "▼";
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Set up form change listeners
+                const inputs = document.querySelectorAll("input, select");
+                inputs.forEach(function (el) {
+                    el.addEventListener("change", updateSummary);
+                });
+
+                // Set up drawer toggles
+                const drawerToggles = document.querySelectorAll(".drawer-toggle");
+                drawerToggles.forEach(function (toggle) {
+                    toggle.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const targetId = toggle.dataset.target;
+                        if (targetId) {
+                            toggleDrawer(targetId);
+                        }
+                    });
+                });
+
+                // Set up scroll button
+                const scrollBtn = document.getElementById("scrollSummaryBtn");
+                const summaryCard = document.getElementById("summaryCard");
+                if (scrollBtn && summaryCard) {
+                    scrollBtn.addEventListener("click", function () {
+                        summaryCard.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                }
+
+                // Initial update
+                updateSummary();
+            });
+        })();
+    </script>
+</body>
+
+</html>
